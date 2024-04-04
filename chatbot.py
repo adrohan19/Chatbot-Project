@@ -51,6 +51,9 @@ def converse(vector_embeddings):
 
 def respond(input):
     'Takes user input, generates a response using the conversational chain, and displays the conversation history in Streamlit'
+    if st.session_state.conversation is None:
+        st.write("Please upload your document(s) first")
+        return
     output = st.session_state.conversation({'question': input})
     st.session_state.history = output['chat_history']
 
