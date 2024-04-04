@@ -14,7 +14,11 @@ git clone https://github.com/adrohan19/pdf-chatbot.git
 ```bash
 cd pdf-chatbot
 ```
-3. **Set your OpenAI API key (replace 'YOUR_API_KEY' with your actual key)**:
+3. **Install the required dependencies**:
+```bash
+pip install -r requirements.txt
+```
+4. **Set your OpenAI API key (replace 'YOUR_API_KEY' with your actual key)**:
 ```bash
 export OPENAI_API_KEY='YOUR_API_KEY'
 ```
