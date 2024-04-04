@@ -1,4 +1,5 @@
 from PyPDF2 import PdfReader
+from typing import List, Optional
 import os
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.embeddings.openai import OpenAIEmbeddings
@@ -14,7 +15,15 @@ from dotenv import load_dotenv
 OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 
 def get_text(uploaded_docs):
-    'Takes in list of PDFs returns string of all the content/text in the PDFs'
+    """
+    Takes in a list of PDF file paths, reads their text, and returns a concatenated string.
+
+    Parameters:
+    uploaded_docs (List): A list of file-like objects representing the PDFs.
+
+    Returns:
+    str: A string containing all the text extracted from the PDFs.
+    """
     content = ""
     for doc in uploaded_docs:
         reader = PdfReader(doc)
@@ -23,7 +32,15 @@ def get_text(uploaded_docs):
     return content
 
 def get_chunks(text):
-    'Creates shorter chunks from the texts inputted'
+    """
+    Splits the given text into smaller chunks suitable for processing.
+
+    Parameters:
+    text (str): A string of text to be split.
+
+    Returns:
+    List[str]: A list of strings, where each is a chunk of the original text.
+    """
     splitter = CharacterTextSplitter(
         chunk_size = 1024,
         separator ='\n',
@@ -33,13 +50,29 @@ def get_chunks(text):
     return splitter.split_text(text)
 
 def get_embeddings(chunks):
-    'Creates vector embeddings for each chunk and stores it in Meta Faiss vector store.'
+    """
+    Creates vector embeddings for each text chunk and stores them in a FAISS vector store.
+
+    Parameters:
+    chunks (List[str]): A list of text chunks to be embedded.
+
+    Returns:
+    FAISS: A FAISS vector store containing the vector embeddings of the chunks.
+    """
     embeds = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
     vector_embeddings = FAISS.from_texts(texts = chunks, embedding = embeds)
     return vector_embeddings
 
 def converse(vector_embeddings):
-    'Sets up a conversational retrieval chain using the vector embeddings and returns the chain object.'
+    """
+    Sets up and returns a conversational retrieval chain using the provided vector embeddings.
+
+    Parameters:
+    vector_embeddings (FAISS): A FAISS vector store containing vector embeddings of text chunks.
+
+    Returns:
+    ConversationalRetrievalChain: The initialized conversational retrieval chain.
+    """
     model = ChatOpenAI()
     mem = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
     chain = ConversationalRetrievalChain.from_llm(
@@ -50,7 +83,12 @@ def converse(vector_embeddings):
     return chain
 
 def respond(input):
-    'Takes user input, generates a response using the conversational chain, and displays the conversation history in Streamlit'
+    """
+    Takes user input, generates a response using the conversational chain, and displays the conversation history.
+
+    Parameters:
+    input (str): The user input to be processed by the conversational chain.
+    """
     if st.session_state.conversation is None:
         st.write("Please upload your document(s) first")
         return
@@ -64,6 +102,9 @@ def respond(input):
             st.write(chatbot.replace("{{MSG}}", message.content), unsafe_allow_html=True)
 
 def main():
+    """
+    Main function to initialize the Streamlit app.
+    """
     load_dotenv()
     st.set_page_config(page_title='PDF Chatbot')
 
