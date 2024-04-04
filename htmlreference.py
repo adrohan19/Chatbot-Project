@@ -29,12 +29,12 @@ css = '''
   width: 60px; 
   height: 60px; 
   border-radius: 50%;
-  background-color: #333; /* Or any color that fits your design */
+  background-color: #333; 
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  color: white; /* Choose a text color that stands out against the avatar background */
+  color: white;
 }
 
   .chat-message.user {
@@ -57,7 +57,7 @@ css = '''
   .chat-message .message {
     padding: 0.5rem 1rem;
     border-radius: 15px;
-    max-width: 80%; /* Ensures text doesn't span the entire width */
+    max-width: 80%;
   }
 </style>
 '''

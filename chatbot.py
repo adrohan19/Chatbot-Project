@@ -5,7 +5,6 @@ from langchain_community.embeddings.openai import OpenAIEmbeddings
 from langchain_community.vectorstores.faiss import FAISS
 from langchain.memory import ConversationBufferMemory
 from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
-from langchain_openai import OpenAI
 from langchain_openai import ChatOpenAI
 import streamlit as st
 from htmlreference import css, user, chatbot
@@ -35,7 +34,6 @@ def get_chunks(text):
 
 def get_embeddings(chunks):
     'Creates vector embeddings for each chunk and stores it in Meta Faiss vector store.'
-    # embeds = OpenAIEmbeddings()
     embeds = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
     vector_embeddings = FAISS.from_texts(texts = chunks, embedding = embeds)
     return vector_embeddings
@@ -77,7 +75,6 @@ def main():
     st.header('Q&A with Chatbot :file_folder:')
 
     input = st.text_input('Ask me anything about the PDFs you uploaded')
-
 
     if input:
         respond(input)
