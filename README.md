@@ -5,7 +5,7 @@ A conversational agent designed to answer questions based on content from upload
 Installation:
 
 Clone the repository:
-git clone https://github.com/adrohan19/Chatbot-Project.git
+git clone https://github.com/adrohan19/pdf-chatbot.git
 
 Navigate to the project directory:
 cd Chatbot-Project
